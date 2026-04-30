@@ -68,6 +68,7 @@ export default function ComparePage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* CONTENT */}
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
@@ -87,75 +88,90 @@ export default function ComparePage() {
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-160">
-              <thead>
-                <tr>
-                  <th className="w-40 py-4 pr-4 text-left text-gray-500 font-medium text-sm align-top">
-                    Feature
-                  </th>
-                  {colleges.map((college) => (
-                    <th key={college.id} className="py-4 px-4 text-left align-top">
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">
-                            {college.rating}⭐
-                          </span>
-                          <button
-                            onClick={() => removeCollege(college.id)}
-                            className="text-gray-600 hover:text-red-400 text-lg leading-none"
-                            title="Remove"
-                          >
-                            ×
-                          </button>
-                        </div>
-                        <Link href={`/colleges/${college.id}`}>
-                          <h3 className="font-bold text-gray-800 text-sm leading-snug hover:text-blue-600 transition">
-                            {college.name}
-                          </h3>
-                          <p className="text-gray-500 text-xs mt-1">
+          <>
+            {/* ✅ MOBILE VIEW (Cards) */}
+            <div className="md:hidden space-y-6">
+              {colleges.map((college) => (
+                <div key={college.id} className="bg-white rounded-xl shadow-sm border p-4">
+
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="font-bold text-gray-800">{college.name}</h3>
+                      <p className="text-xs text-gray-500">
+                        {college.city}, {college.state}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => removeCollege(college.id)}
+                      className="text-red-400 text-lg"
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    {COMPARE_FIELDS.map((field) => (
+                      <div key={field.label} className="flex justify-between">
+                        <span className="text-gray-500">{field.label}</span>
+                        <span className="font-medium text-gray-800">
+                          {field.render(college)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ✅ DESKTOP VIEW (Table) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full min-w-175">
+                <thead>
+                  <tr>
+                    <th className="w-40 py-4 pr-4 text-left text-gray-500 text-sm">
+                      Feature
+                    </th>
+                    {colleges.map((college) => (
+                      <th key={college.id} className="py-4 px-4 text-left">
+                        <div className="bg-white rounded-xl shadow-sm border p-4">
+                          <div className="flex justify-between mb-2">
+                            <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">
+                              {college.rating}⭐
+                            </span>
+                            <button
+                              onClick={() => removeCollege(college.id)}
+                              className="text-gray-600 hover:text-red-400"
+                            >
+                              ×
+                            </button>
+                          </div>
+                          <h3 className="font-bold text-sm">{college.name}</h3>
+                          <p className="text-xs text-gray-500">
                             {college.city}, {college.state}
                           </p>
-                        </Link>
-                        <p className="text-xs text-green-700 font-semibold mt-2">
-                          {college.placement_percent}% Placement
-                        </p>
-                      </div>
-                    </th>
-                  ))}
-                  {Array.from({ length: 3 - colleges.length }).map((_, i) => (
-                    <th key={`empty-${i}`} className="py-4 px-4 text-left align-top">
-                      <Link href="/">
-                        <div className="bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-blue-300 transition">
-                          <span className="text-gray-300 text-3xl">+</span>
-                          <p className="text-gray-400 text-xs mt-1">Add College</p>
                         </div>
-                      </Link>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARE_FIELDS.map((field, idx) => (
-                  <tr key={field.label} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
-                    <td className="py-3.5 pr-4 text-sm font-medium text-gray-500 pl-1">
-                      {field.label}
-                    </td>
-                    {colleges.map((college) => (
-                      <td key={college.id} className="py-3.5 px-4 text-sm text-gray-800 font-medium">
-                        {field.render(college)}
-                      </td>
-                    ))}
-                    {Array.from({ length: 3 - colleges.length }).map((_, i) => (
-                      <td key={`empty-cell-${i}`} className="py-3.5 px-4 text-sm text-gray-200">
-                        —
-                      </td>
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody>
+                  {COMPARE_FIELDS.map((field, idx) => (
+                    <tr key={field.label} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="py-3 pr-4 text-sm text-gray-500">
+                        {field.label}
+                      </td>
+                      {colleges.map((college) => (
+                        <td key={college.id} className="py-3 px-4 text-sm font-medium">
+                          {field.render(college)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>
