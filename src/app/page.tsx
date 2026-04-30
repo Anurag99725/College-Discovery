@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { College } from '@/types'
 import { Search, MapPin, DollarSign, Star } from 'lucide-react'
 import CollegeCard from '@/components/ui/CollegeCard'
+import { Notification, useNotification } from '@/components/ui/Notification'
 
 export default function Home() {
   const [colleges, setColleges] = useState<College[]>([])
@@ -13,6 +14,7 @@ export default function Home() {
   const [maxFees, setMaxFees] = useState('9999999')
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
+  const { notif, show } = useNotification()
 
   const limit = 9
 
@@ -87,6 +89,8 @@ export default function Home() {
         </select>
       </div>
 
+      <Notification notif={notif} />
+
       <p className="text-sm text-gray-500 mb-4">{total} colleges found</p>
 
       {loading ? (
@@ -103,10 +107,10 @@ export default function Home() {
               college={college}
               onCompare={(id) => {
                 const existing = JSON.parse(localStorage.getItem('compareList') || '[]')
-                if (existing.length >= 3) { alert('Max 3 colleges'); return }
-                if (existing.includes(id)) { alert('Already added'); return }
+                if (existing.length >= 3) { show("Max 3 colleges allowed", "warning"); return }
+                if (existing.includes(id)) { show("Already in compare list", "error"); return }
                 localStorage.setItem('compareList', JSON.stringify([...existing, id]))
-                alert('Added to compare!')
+                show("Added to compare!", "success")
               }}
             />
           ))}
