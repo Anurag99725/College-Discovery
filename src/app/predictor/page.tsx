@@ -52,7 +52,6 @@ export default function PredictorPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-linear-to-r from-purple-700 to-purple-500 text-white">
         <div className="max-w-4xl mx-auto px-4 py-10">
           <Link href="/" className="text-purple-200 hover:text-white text-sm">
@@ -66,7 +65,6 @@ export default function PredictorPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Input Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
           <h2 className="text-lg font-bold text-gray-800 mb-5">Your Details</h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -107,14 +105,12 @@ export default function PredictorPage() {
           </button>
         </div>
 
-        {/* Spinner */}
         {loading && (
           <div className="flex justify-center py-16">
             <div className="w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
-        {/* Results */}
         {!loading && searched && (
           <>
             {results.length === 0 ? (
@@ -125,38 +121,33 @@ export default function PredictorPage() {
               </div>
             ) : (
               <>
-                {/* Summary Cards */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   {(['High', 'Medium', 'Low'] as const).map((level) => (
                     <button
                       key={level}
                       onClick={() => setFilter(filter === level ? 'All' : level)}
-                      className={`rounded-xl p-4 text-center border-2 transition ${
-                        filter === level ? 'border-purple-400 shadow-md' : 'border-transparent'
-                      } ${
-                        level === 'High'
+                      className={`rounded-xl p-4 text-center border-2 transition ${filter === level ? 'border-purple-400 shadow-md' : 'border-transparent'
+                        } ${level === 'High'
                           ? 'bg-green-50'
                           : level === 'Medium'
-                          ? 'bg-yellow-50'
-                          : 'bg-red-50'
-                      }`}
+                            ? 'bg-yellow-50'
+                            : 'bg-red-50'
+                        }`}
                     >
-                      <p className={`text-2xl font-bold ${
-                        level === 'High'
+                      <p className={`text-2xl font-bold ${level === 'High'
                           ? 'text-green-700'
                           : level === 'Medium'
-                          ? 'text-yellow-700'
-                          : 'text-red-700'
-                      }`}>
+                            ? 'text-yellow-700'
+                            : 'text-red-700'
+                        }`}>
                         {counts[level]}
                       </p>
-                      <p className={`text-sm font-medium ${
-                        level === 'High'
+                      <p className={`text-sm font-medium ${level === 'High'
                           ? 'text-green-600'
                           : level === 'Medium'
-                          ? 'text-yellow-600'
-                          : 'text-red-600'
-                      }`}>
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                        }`}>
                         {level} Chance
                       </p>
                     </button>

@@ -4,18 +4,17 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { College } from '@/types';
 
-// Only fields that exist in your College type
 const COMPARE_FIELDS: {
   label: string;
   render: (c: College) => string | number;
 }[] = [
-  { label: 'City', render: (c) => c.city },
-  { label: 'State', render: (c) => c.state },
-  { label: 'Location', render: (c) => c.location },
-  { label: 'Fees / Year', render: (c) => `₹${c.fees_per_year.toLocaleString('en-IN')}` },
-  { label: 'Rating', render: (c) => `${c.rating} / 5` },
-  { label: 'Placement %', render: (c) => `${c.placement_percent}%` },
-];
+    { label: 'City', render: (c) => c.city },
+    { label: 'State', render: (c) => c.state },
+    { label: 'Location', render: (c) => c.location },
+    { label: 'Fees / Year', render: (c) => `₹${c.fees_per_year.toLocaleString('en-IN')}` },
+    { label: 'Rating', render: (c) => `${c.rating} / 5` },
+    { label: 'Placement %', render: (c) => `${c.placement_percent}%` },
+  ];
 
 export default function ComparePage() {
   const [ids, setIds] = useState<string[]>([]);
@@ -48,7 +47,6 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
           <div>
@@ -125,7 +123,6 @@ export default function ComparePage() {
                       </div>
                     </th>
                   ))}
-                  {/* Empty slot placeholders */}
                   {Array.from({ length: 3 - colleges.length }).map((_, i) => (
                     <th key={`empty-${i}`} className="py-4 px-4 text-left align-top">
                       <Link href="/">

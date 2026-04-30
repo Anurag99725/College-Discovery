@@ -1,22 +1,23 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest, {params} : {params : Promise<{id: string}>}) {
-    const {id} = await params
-    const {data: college, error} = await supabase
-    .from('colleges')
-    .select('*')
-    .eq('id', `${id}`)
-    .maybeSingle()
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+
+    const { data: college, error } = await supabase
+        .from('colleges')
+        .select('*')
+        .eq('id', `${id}`)
+        .maybeSingle()
 
     console.log(error)
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
     const { data: courses } = await supabase
-    .from('courses')
-    .select('*')
-    .eq('college_id', id)    
+        .from('courses')
+        .select('*')
+        .eq('college_id', id)
 
     return NextResponse.json({ college, courses })
 }

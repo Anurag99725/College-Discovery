@@ -27,7 +27,7 @@ export default function CollegeCard({ college, onCompare }: { college: College; 
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition overflow-hidden">
-      
+
       {/* Gradient Header instead of image */}
       <div className={`bg-linear-to-br ${gradient} h-28 flex items-center justify-center relative`}>
         <span className="text-white text-4xl font-bold opacity-90">{initials}</span>
@@ -38,7 +38,6 @@ export default function CollegeCard({ college, onCompare }: { college: College; 
         </div>
       </div>
 
-      {/* Card Body */}
       <div className="p-5">
         <h3 className="font-bold text-gray-800 text-base leading-snug line-clamp-2 mb-1">
           {college.name}
@@ -47,7 +46,6 @@ export default function CollegeCard({ college, onCompare }: { college: College; 
           📍 {college.city}, {college.state}
         </p>
 
-        {/* Stats Row */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="bg-gray-50 rounded-lg p-2.5 text-center">
             <p className="text-sm font-bold text-blue-700">
@@ -63,7 +61,6 @@ export default function CollegeCard({ college, onCompare }: { college: College; 
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2">
           <Link
             href={`/colleges/${college.id}`}

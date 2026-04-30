@@ -39,13 +39,11 @@ export default function Home() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Find Your College</h1>
         <p className="text-gray-500 mt-1">Discover and compare top colleges in India</p>
       </div>
 
-      {/* Search + Filters */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-8 flex flex-wrap gap-4">
         <div className="flex items-center gap-2 flex-1 min-w-50 border border-gray-200 rounded-xl px-3 py-2">
           <Search size={16} className="text-gray-400" />
@@ -89,10 +87,8 @@ export default function Home() {
         </select>
       </div>
 
-      {/* Results count */}
       <p className="text-sm text-gray-500 mb-4">{total} colleges found</p>
 
-      {/* College Cards */}
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(9)].map((_, i) => (
@@ -117,7 +113,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-10">
           <button

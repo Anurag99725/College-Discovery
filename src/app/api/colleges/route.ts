@@ -19,19 +19,17 @@ export async function GET(req: NextRequest) {
     const offset = (page - 1) * limit
 
     let query = supabase
-    .from('colleges')
-    .select('*', { count: 'exact' })
-    .order('rating', { ascending: false })
-    .range(offset, offset + limit - 1)
+        .from('colleges')
+        .select('*', { count: 'exact' })
+        .order('rating', { ascending: false })
+        .range(offset, offset + limit - 1)
 
-    // Only apply search if not empty
     if (search) query = query.ilike('name', `%${search}%`)
 
-    // Only apply fees filter if values are valid numbers
     if (minFees && !isNaN(parseInt(minFees))) query = query.gte('fees_per_year', parseInt(minFees))
+    
     if (maxFees && !isNaN(parseInt(maxFees))) query = query.lte('fees_per_year', parseInt(maxFees))
 
-    // Only apply state filter if not empty
     if (state) query = query.eq('state', state)
 
     const { data, error, count } = await query

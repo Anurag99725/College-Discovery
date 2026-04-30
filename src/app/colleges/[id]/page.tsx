@@ -67,7 +67,6 @@ export default function CollegeDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Hero Banner */}
       <div className="bg-linear-to-r from-blue-700 to-blue-500 text-white">
         <div className="max-w-6xl mx-auto px-4 py-10">
           <button
@@ -100,7 +99,6 @@ export default function CollegeDetailPage() {
         </div>
       </div>
 
-      {/* Stat Cards */}
       <div className="max-w-6xl mx-auto px-4 -mt-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
@@ -132,25 +130,22 @@ export default function CollegeDetailPage() {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="max-w-6xl mx-auto px-4 mt-8">
         <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit mb-6">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-5 py-2 rounded-lg text-sm font-medium transition ${
-                activeTab === tab.key
-                  ? 'bg-white text-blue-700 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition ${activeTab === tab.key
+                ? 'bg-white text-blue-700 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               {tab.label}
             </button>
           ))}
         </div>
 
-        {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <div className="md:col-span-2 space-y-6">
@@ -196,7 +191,6 @@ export default function CollegeDetailPage() {
           </div>
         )}
 
-        {/* Courses Tab */}
         {activeTab === 'courses' && (
           <div className="mb-12">
             {courses.length === 0 ? (
@@ -227,7 +221,6 @@ export default function CollegeDetailPage() {
           </div>
         )}
 
-        {/* Cutoffs Tab */}
         {activeTab === 'cutoffs' && (
           <div className="mb-12">
             {cutoffs.length === 0 ? (

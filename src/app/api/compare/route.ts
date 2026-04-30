@@ -1,8 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest) {
-    const {searchParams} = new URL(req.url)
+export async function GET(req: NextRequest) {
+    const { searchParams } = new URL(req.url)
 
     const ids = searchParams.get('ids') || ''
 
@@ -12,10 +12,10 @@ export async function GET(req:NextRequest) {
         return NextResponse.json({ error: 'Minimum 2 colleges required' }, { status: 400 })
     }
 
-    const {data, error} = await supabase
-    .from('colleges')
-    .select("*")
-    .in('id', idArray)
+    const { data, error } = await supabase
+        .from('colleges')
+        .select("*")
+        .in('id', idArray)
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
