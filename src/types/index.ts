@@ -27,3 +27,17 @@ export interface RankCutoff {
   min_rank: number
   max_rank: number
 }
+
+export interface Placement {
+  id: string;
+  college_id: string;
+
+  placement_rate: number;     
+  avg_package: number;        
+  highest_package: number;    
+  median_package: number;     
+
+  top_recruiters: string[];  
+
+  created_at: string;
+}

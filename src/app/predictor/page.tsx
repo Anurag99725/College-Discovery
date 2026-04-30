@@ -175,7 +175,7 @@ export default function PredictorPage() {
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
                           <Link
-                            href={`/college/${result.college_id}`}
+                            href={`/colleges/${result.college_id}`}
                             className="font-bold text-gray-800 hover:text-purple-600 transition"
                           >
                             {result.college_name}

@@ -103,13 +103,13 @@ export default function ComparePage() {
                           </span>
                           <button
                             onClick={() => removeCollege(college.id)}
-                            className="text-gray-300 hover:text-red-400 text-lg leading-none"
+                            className="text-gray-600 hover:text-red-400 text-lg leading-none"
                             title="Remove"
                           >
                             ×
                           </button>
                         </div>
-                        <Link href={`/college/${college.id}`}>
+                        <Link href={`/colleges/${college.id}`}>
                           <h3 className="font-bold text-gray-800 text-sm leading-snug hover:text-blue-600 transition">
                             {college.name}
                           </h3>

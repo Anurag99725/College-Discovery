@@ -10,7 +10,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         .eq('id', `${id}`)
         .maybeSingle()
 
-    console.log(error)
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
@@ -19,5 +18,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         .select('*')
         .eq('college_id', id)
 
-    return NextResponse.json({ college, courses })
+    const {data: placement} = await supabase
+        .from('placements')
+        .select('*')
+        .eq('college_id', id)
+        .maybeSingle()
+
+
+    return NextResponse.json({ college, courses, placement })
 }

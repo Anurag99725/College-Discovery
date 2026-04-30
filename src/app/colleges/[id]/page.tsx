@@ -3,16 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { College, Course, RankCutoff } from '@/types';
+import { College, Course, Placement } from '@/types';
+import { Notification, useNotification } from '@/components/ui/Notification';
 
 export default function CollegeDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const [college, setCollege] = useState<College | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [cutoffs, setCutoffs] = useState<RankCutoff[]>([]);
+  const [placement, setPlacement] = useState<Placement | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'courses' | 'cutoffs'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'courses' | 'placement'>('overview');
+  const { notif, show } = useNotification()
 
   useEffect(() => {
     if (!id) return;
@@ -21,7 +23,7 @@ export default function CollegeDetailPage() {
       .then((data) => {
         setCollege(data.college);
         setCourses(data.courses || []);
-        setCutoffs(data.cutoffs || []);
+        setPlacement(data.placement || []);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -29,15 +31,15 @@ export default function CollegeDetailPage() {
   const addToCompare = () => {
     const existing: string[] = JSON.parse(localStorage.getItem('compareList') || '[]');
     if (existing.includes(id as string)) {
-      alert('Already in compare list');
+      show('Already in compare list', 'error');
       return;
     }
     if (existing.length >= 3) {
-      alert('You can compare up to 3 colleges only');
+      show('You can compare up to 3 colleges only', 'error');
       return;
     }
     localStorage.setItem('compareList', JSON.stringify([...existing, id]));
-    alert('Added to compare list!');
+    show('Added to compare list!', 'success');
   };
 
   if (loading) return (
@@ -61,7 +63,7 @@ export default function CollegeDetailPage() {
   const tabs = [
     { key: 'overview', label: 'Overview' },
     { key: 'courses', label: `Courses (${courses.length})` },
-    { key: 'cutoffs', label: `Rank Cutoffs (${cutoffs.length})` },
+    { key: 'placement', label: 'Placement' },
   ] as const;
 
   return (
@@ -98,6 +100,8 @@ export default function CollegeDetailPage() {
           </div>
         </div>
       </div>
+
+      <Notification notif={notif} />
 
       <div className="max-w-6xl mx-auto px-4 -mt-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -221,40 +225,57 @@ export default function CollegeDetailPage() {
           </div>
         )}
 
-        {activeTab === 'cutoffs' && (
+        {activeTab === 'placement' && placement && (
+
           <div className="mb-12">
-            {cutoffs.length === 0 ? (
-              <p className="text-gray-400 text-center py-12">
-                No rank cutoff data available.
-              </p>
-            ) : (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
-                    <tr>
-                      {['Exam', 'Min Rank', 'Max Rank'].map((h) => (
-                        <th key={h} className="px-4 py-3 text-left font-semibold">
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {cutoffs.map((c) => (
-                      <tr key={c.id} className="hover:bg-gray-50 transition">
-                        <td className="px-4 py-3 font-medium text-gray-800">{c.exam}</td>
-                        <td className="px-4 py-3 text-green-700 font-semibold">
-                          {c.min_rank.toLocaleString('en-IN')}
-                        </td>
-                        <td className="px-4 py-3 text-red-600 font-semibold">
-                          {c.max_rank.toLocaleString('en-IN')}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+              <h2 className="text-lg font-bold mb-4">Placement Overview</h2>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-sm text-gray-500">Placement Rate</p>
+                  <p className="text-xl font-semibold text-green-600">
+                    {placement.placement_rate}%
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Avg Package</p>
+                  <p className="text-xl font-semibold">
+                    ₹{(placement.avg_package / 100000).toFixed(1)} LPA
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Highest</p>
+                  <p className="text-xl font-semibold">
+                    ₹{(placement.highest_package / 100000).toFixed(1)} LPA
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500">Median</p>
+                  <p className="text-xl font-semibold">
+                    ₹{(placement.median_package / 100000).toFixed(1)} LPA
+                  </p>
+                </div>
               </div>
-            )}
+
+              <div className="mt-6">
+                <p className="text-sm text-gray-500 mb-2">Top Recruiters</p>
+                <div className="flex flex-wrap gap-2">
+                  {Array.isArray(placement.top_recruiters) &&
+                    placement.top_recruiters.map((c: string) => (
+                      <span
+                        key={c}
+                        className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs"
+                      >
+                        {c}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -8,10 +8,6 @@ export async function GET(req: NextRequest) {
 
     const idArray = ids.split(',').filter(Boolean)
 
-    if (idArray.length < 2) {
-        return NextResponse.json({ error: 'Minimum 2 colleges required' }, { status: 400 })
-    }
-
     const { data, error } = await supabase
         .from('colleges')
         .select("*")
